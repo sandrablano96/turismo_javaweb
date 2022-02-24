@@ -1,0 +1,227 @@
+* {
+                margin: 0;
+                box-sizing: border-box;
+                font-family: 'Varela Round', sans-serif;
+            }
+            header {
+                background-color: #DDDDBB;
+                height: 11rem;
+            }
+
+            h1 {
+                font-family: 'Days One', sans-serif;
+                font-kerning: normal;
+            }
+            .contenedor-empresa p{
+                font-family: 'Waiting for the sunrise', sans-serif;
+                font-size: 1.2rem;
+
+            }
+            main {
+                margin: 2rem;
+            }
+            /* EMPRESA Y LOGOTIPO*/
+            .contenedor-empresa {
+                margin-left: 2rem;
+                width: 60%;
+                padding: 2rem;
+
+            }
+
+            /*LOGIN*/
+            .contenedor-login {
+                width: 40%;
+                margin-right: 2rem;
+                padding: 1rem;
+                position:absolute;
+                top: 0.1rem;
+                right: 4rem;
+            }
+
+            #login{padding:1rem;  font-size: 1.2rem;}
+
+            .botonFormulario {
+                margin: 0.5rem 0.5rem 0.5rem 0; 
+                font-weight: bold;
+                cursor: pointer;
+                padding: 0.3rem;
+                width: 4rem;
+                border: 1px solid #ccc;
+                background: whitesmoke;
+                border-radius: 2rem;
+                font-family: 'Exo', sans-serif;
+                text-transform: uppercase;
+                color: black;
+                display:inline-block
+            }
+
+            .contenedor-login a {
+                font-size: 1.2rem;
+                text-decoration: none;
+                color:#4B2C34;
+            }
+            .campo{ 
+                margin: 0.2rem;
+                cursor: pointer;
+                padding: 0.3rem;
+                background: whitesmoke;
+                border-radius: 2rem;
+                background-color: whitesmoke;
+                border: 1px solid #ccc;
+                width: 10rem;
+            }
+
+
+            ::-webkit-input-placeholder{
+
+                font-size: 1rem;
+
+            }
+            :-moz-placeholder{ /* Firefox 18- */
+
+                font-size: 1rem;
+
+            }
+            ::-moz-placeholder{ /* Firefox 19+ */
+
+                font-size: 1rem;
+
+            }
+            :-ms-input-placeholder{
+
+                font-size: 1rem;
+
+            }
+
+            /*USUARIO*/
+            #foto_usuario{
+                height: 80px;
+                width: 80px;
+                background-size: cover;
+                background-position: center;
+                border-radius: 40px;
+                box-shadow: 0px 0px 5px 0px #aaa;
+                margin: 5px;
+            }
+
+            #usuario {
+                font-weight: 400;
+                padding: 0.2rem;
+                position:absolute;
+                top:1rem;
+                right: 8rem;
+
+            }
+
+            #usuario a {
+                color: #4B2C34;
+            }
+
+            /* NAV */
+            nav {
+                display: flex;
+                justify-content: space-around;
+                background-color: #779977;
+            }
+
+            nav a {
+                text-transform: uppercase;
+                text-decoration: none;
+                padding: 20px;
+                color: white;
+                width: 33%;
+                text-align: center;
+            }
+
+            nav a:hover {
+                background-color: #4B2C34;
+                color: white;
+            }
+            
+            /* FOOTER */
+            footer { 
+                padding: 60px 0 30px 0;
+                background-color: #6b3f4b;
+            }
+
+            .contenedor-footer {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                text-align: center;
+            }
+
+            .content-foo {
+                color: white;
+                width: 28%;
+                padding-bottom: 40px;
+                line-height: 35px;
+                align-items: center;
+            }
+
+            .titulo-final {
+                font-weight: 300px;
+
+            }
+
+
+            #hr {
+                color: white;
+                width: 20%;
+                border: 2px solid;
+                margin: auto;
+            }
+
+            .copy {
+                padding-top: 10px;
+                border-top: 1px solid white;
+                font-weight: 300px;
+                color: lightgrey;
+                width: 100%;
+            }
+            
+            /* REGISTRO */
+            .cuadro {
+                width: 100%;
+                padding: 5px;
+                box-sizing: border-box;
+                margin: 15px auto;
+                display: block;
+            }
+            label{
+                margin-bottom: 4px;
+            }
+            #registro {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: auto;
+                background-color: #DDDDBB;
+                width: 40%;
+                padding: 2rem;
+                box-shadow: 0px 0px 5px 0px #aaa;
+            }
+            
+            #formularioRegistro{
+                width: 100%
+            }
+            .error{
+                width: 80%;
+                padding: 5px;
+                box-sizing: border-box;
+                margin: 5px auto;
+                display: block;
+                color: red;
+                border: 1px solid red;
+            }
+            
+            .imagen {
+                text-align:center 
+            }
+            
+            .imagen img{
+                width: 30%
+            }
+
+
