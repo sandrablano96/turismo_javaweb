@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.Favorito;
+import DAO.ICrudUsuario;
+import DAO.ICrudElementoPatrimonial;
+import DAO.CrudUsuario;
+import DAO.CrudElementoPatrimonial;
 
 /**
  *
@@ -21,9 +25,13 @@ import modelo.Favorito;
 @WebServlet(name = "ControladorFavoritos", urlPatterns = {"/ControladorFavoritos"})
 public class ControladorFavoritos extends HttpServlet {
     ICrudFavoritos daofav;
+    ICrudUsuario daousu;
+    ICrudElementoPatrimonial daoele;
     @Override
     public void init() {
         daofav = new CrudFavoritos();
+        daousu = new CrudUsuario();
+        daoele = new CrudElementoPatrimonial();
     }
 
     /**
@@ -49,6 +57,8 @@ public class ControladorFavoritos extends HttpServlet {
                 id_usuario = Integer.parseInt(request.getParameter("usuario"));
                 id_elemento = Integer.parseInt(request.getParameter("elemento"));
                 fav = new Favorito(id_usuario,id_elemento);
+                fav.setUsuario(daousu.consultarPorId(id_usuario));
+                fav.setElementoPatrimonial(daoele.consultarElementoPatrimonial(id_elemento));
                 if( daofav.insertar(fav)){
                     response.getWriter().write("correcto");
                 }else{

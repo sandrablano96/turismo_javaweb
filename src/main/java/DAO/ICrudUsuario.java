@@ -15,6 +15,7 @@ import modelo.Usuario;
 public interface ICrudUsuario {
     public boolean insertar(Usuario u);
     public Usuario consultar(String email);
+    public Usuario consultarPorId(int id);
 
 
     

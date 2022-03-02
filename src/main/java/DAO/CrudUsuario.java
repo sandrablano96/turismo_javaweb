@@ -67,5 +67,16 @@ public class CrudUsuario implements ICrudUsuario {
         manager.close();
         return usuario;
     }
+
+    @Override
+    public Usuario consultarPorId(int id) {
+       EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
+        EntityManager manager = factory.createEntityManager();
+        manager.getTransaction().begin();
+        Usuario usu = manager.find(Usuario.class, id);
+        manager.getTransaction().commit();
+        manager.close();
+        return usu;
+    }
     
 }
