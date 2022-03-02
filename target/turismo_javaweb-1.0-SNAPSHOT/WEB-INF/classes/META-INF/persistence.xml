@@ -6,6 +6,7 @@
     <class>modelo.Usuario</class>
     <class>modelo.Detalle</class>
     <class>modelo.Tipo</class>
+    <class>modelo.Tipo_1</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/turismo_javaweb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

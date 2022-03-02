@@ -7,7 +7,7 @@ import modelo.ElementoPatrimonial;
 import modelo.FavoritoPK;
 import modelo.Usuario;
 
-@Generated(value="EclipseLink-2.7.7.v20200504-rNA", date="2022-02-24T18:14:44")
+@Generated(value="EclipseLink-2.7.7.v20200504-rNA", date="2022-03-01T21:30:02")
 @StaticMetamodel(Favorito.class)
 public class Favorito_ { 
 

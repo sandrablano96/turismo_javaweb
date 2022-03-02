@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -70,10 +71,8 @@ public class ElementoPatrimonial implements Serializable {
     @JoinColumn(name = "tipo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Tipo tipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idElemento")
-    private List<Detalle> detalleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "elementoPatrimonial")
-    private List<Favorito> favoritoList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idElemento")
+    private Detalle detalle;
 
     public ElementoPatrimonial() {
     }
@@ -139,21 +138,12 @@ public class ElementoPatrimonial implements Serializable {
     }
 
     @XmlTransient
-    public List<Detalle> getDetalleList() {
-        return detalleList;
+    public Detalle getDetalle() {
+        return detalle;
     }
 
-    public void setDetalleList(List<Detalle> detalleList) {
-        this.detalleList = detalleList;
-    }
-
-    @XmlTransient
-    public List<Favorito> getFavoritoList() {
-        return favoritoList;
-    }
-
-    public void setFavoritoList(List<Favorito> favoritoList) {
-        this.favoritoList = favoritoList;
+    public void setDetalle(Detalle detalle) {
+        this.detalle = detalle;
     }
 
     @Override

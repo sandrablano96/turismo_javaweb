@@ -48,27 +48,8 @@ public class CrudUsuario implements ICrudUsuario {
         return isInsertado;
     }
 
-    @Override
-    public boolean modificar(Usuario u) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
-        EntityManager manager = factory.createEntityManager();
-        manager.getTransaction().begin();
-        Usuario usu = manager.find(Usuario.class, u.getId());
-        if (usu != null) {
-            try {
-                manager.merge(u);
-                manager.getTransaction().commit();
-                return true;
 
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            } finally {
-                manager.close();
-            }
-        }
-        return false;
-    }
-
+    
     @Override
     public Usuario consultar(String email) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
@@ -80,22 +61,11 @@ public class CrudUsuario implements ICrudUsuario {
         Usuario usuario= null;
         if (!results.isEmpty()) {
             usuario = (Usuario) results.get(0);
-        }
+}
         
         manager.getTransaction().commit();
         manager.close();
         return usuario;
-    }
-
-    @Override
-    public String comprobarRol(Usuario u) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
-        EntityManager manager = factory.createEntityManager();
-        manager.getTransaction().begin();
-        Usuario usuario= manager.find(Usuario.class, u.getId());
-        manager.getTransaction().commit();
-        manager.close();
-        return usuario.getRol();
     }
     
 }

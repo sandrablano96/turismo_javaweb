@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import modelo.Detalle;
 import modelo.ElementoPatrimonial;
 
 
@@ -24,31 +25,41 @@ public class CrudElementoPatrimonial implements ICrudElementoPatrimonial{
         boolean insertado= false;
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
         EntityManager manager = factory.createEntityManager();
+        ElementoPatrimonial el = null;
         manager.getTransaction().begin();
-        ElementoPatrimonial el = manager.find(ElementoPatrimonial.class, ep.getId());
-        if(el == null){            
-            manager.persist(ep);
+            Query querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e WHERE e.nombre = :nombre and e.tipo.id = :tipo and e.localidad = :localidad");
+            querysql.setParameter("nombre",ep.getNombre());
+            querysql.setParameter("tipo",ep.getTipo().getId());
+            querysql.setParameter("localidad",ep.getLocalidad());
+            List resultado = querysql.getResultList();
+            if(resultado.size() == 0){
+                manager.persist(ep);
+                
+                manager.flush();
+                ep.getId();
+                el = manager.find(ElementoPatrimonial.class, ep.getId());
+                insertado = true;
+            }
+
             manager.getTransaction().commit();
             
             manager.close();
             factory.close();
-            insertado = true;
-        }
+
         return insertado;
     }
 
     @Override
-    public boolean modificar(ElementoPatrimonial ep) {
-        boolean modificado = false;
+    public ElementoPatrimonial modificar(ElementoPatrimonial ep) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
         EntityManager manager = factory.createEntityManager();
         manager.getTransaction().begin();
         ElementoPatrimonial el = manager.find(ElementoPatrimonial.class, ep.getId());
+        
         if(el != null){
             try{ 
             manager.merge(ep);
             manager.getTransaction().commit();
-            modificado = true;
             
             }catch (Exception e){
                 System.out.println(e.getMessage());
@@ -57,7 +68,7 @@ public class CrudElementoPatrimonial implements ICrudElementoPatrimonial{
                 factory.close();
             }
         }
-        return modificado;
+        return el;
     }
 
     @Override
@@ -67,8 +78,10 @@ public class CrudElementoPatrimonial implements ICrudElementoPatrimonial{
         EntityManager manager = factory.createEntityManager();
         manager.getTransaction().begin();
         ElementoPatrimonial el = manager.find(ElementoPatrimonial.class, id);
+        Detalle det = manager.find(Detalle.class, el.getDetalle().getId());
         if (el != null) {
             try {
+                manager.remove(det);
                 manager.remove(el);
                 manager.getTransaction().commit();
                 eliminado = true;
@@ -96,11 +109,24 @@ public class CrudElementoPatrimonial implements ICrudElementoPatrimonial{
     public List consultarElementosPatrimoniales() {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
         EntityManager manager = factory.createEntityManager();
-
         List elementos = new ArrayList();
+        Query querysql = null;
+        querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e order by e.nombre asc");
+        elementos = querysql.getResultList();
+        manager.close();
         
-        elementos = manager.createNamedQuery("ElementoPatrimonial.findAll").getResultList();
-        
+        factory.close();
+            
+        return elementos;
+    }
+    @Override
+    public List consultarElementosPatrimonialesOrdenados(String orden) {
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("unidad_persistencia");
+        EntityManager manager = factory.createEntityManager();
+        List elementos = new ArrayList();
+        Query querysql = null;
+        querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e order by e.nombre " + orden);
+        elementos = querysql.getResultList();
         manager.close();
         
         factory.close();
@@ -116,12 +142,12 @@ public class CrudElementoPatrimonial implements ICrudElementoPatrimonial{
         Query querysql = null;
 
         if(tipo.length() > 0 && nombre.length() > 0){
-            querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e WHERE e.nombre = :nombre and e.tipo.nombre = :tipo");
-            querysql.setParameter("nombre",nombre);
+            querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e WHERE e.nombre LIKE :nombre and e.tipo.nombre = :tipo");
+            querysql.setParameter("nombre","%" +nombre +"%");
             querysql.setParameter("tipo",tipo);
         } else if(nombre.length() > 0){
-            querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e WHERE e.nombre = :nombre");
-            querysql.setParameter("nombre",nombre);
+            querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e WHERE e.nombre LIKE :nombre");
+            querysql.setParameter("nombre","%" +nombre +"%");
         } else{
             querysql = manager.createQuery("SELECT e FROM ElementoPatrimonial e WHERE e.tipo.nombre = :tipo");
             querysql.setParameter("tipo",tipo);

@@ -15,10 +15,11 @@ import modelo.Usuario;
  */
 public interface ICrudElementoPatrimonial {
     public boolean insertar(ElementoPatrimonial ep);
-    public boolean modificar(ElementoPatrimonial ep);
+    public ElementoPatrimonial modificar(ElementoPatrimonial ep);
     public boolean borrar(int id);
     public ElementoPatrimonial consultarElementoPatrimonial(int id);
     public List<ElementoPatrimonial> consultarElementosPatrimoniales();
+    public List consultarElementosPatrimonialesOrdenados(String orden);
     public List<ElementoPatrimonial> consultarElementosPatrimonialesFiltros(String tipo, String nombre);
     
     

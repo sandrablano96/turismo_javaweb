@@ -10,7 +10,7 @@ import DAO.ICrudFavoritos;
 import DAO.ICrudUsuario;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import modelo.Usuario;
+import modelo.UsuarioSesion;
 
 /**
  *
@@ -49,6 +50,7 @@ public class ControladorUsuarios extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String accion = request.getParameter("accion");
         switch(accion){
             case "registrar":
@@ -61,11 +63,15 @@ public class ControladorUsuarios extends HttpServlet {
                 cerrarSesion(request, response);
                 break;
             case "mi_perfil":
-                Usuario u = (Usuario) sesion.getAttribute("usuario");
+                UsuarioSesion us = (UsuarioSesion) sesion.getAttribute("usuario");
+                if(us == null){
+                    response.sendRedirect("ControladorElementosP");
+                }
                 daofav = new CrudFavoritos();
-                ArrayList favoritos = (ArrayList) daofav.cargarFavoritosUsuario(u.getId());
-                request.getRequestDispatcher("perfilUsuario").forward(request, response);
-                
+                List favoritos = daofav.cargarFavoritosUsuario(us.getId());
+                request.setAttribute("listadoFavoritos", favoritos);
+                request.getRequestDispatcher("perfilUsuario.jsp").forward(request, response);
+            break;    
         }
         
     }
@@ -94,30 +100,39 @@ public class ControladorUsuarios extends HttpServlet {
             Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
         Usuario usuario = usudao.consultar(email);
-        RequestDispatcher rd;
+        if(usuario != null){
+            
+            try {
             if (email.equals(usuario.getEmail()) && password.equals(usuario.getPassword())) {
                 //iniciamos sesion
-                HttpSession sesion = request.getSession();
-                sesion.setAttribute("usuario", usuario);
+                sesion = request.getSession();
+                UsuarioSesion us = new UsuarioSesion(usuario.getId(), usuario.getNombre(),usuario.getApellidos() , usuario.getRol(), usuario.getImagen(), usuario.getEmail());
+                sesion.setAttribute("usuario", us);
                 sesion.setMaxInactiveInterval(300);
                 response.sendRedirect("ControladorElementosP");
             } else {
-            try {
+            
                 response.sendRedirect("error.jsp");
-            } catch (IOException ex) {
+            }
+        } catch (IOException ex) {
                 Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            
             }
-            }
+        } else {
+            response.sendRedirect("ControladorElementosP");
+        }
+        
+        
     }
     public void cerrarSesion(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        sesion = request.getSession();
         sesion.invalidate();
         request.setAttribute("msg", "Sesión finalizada.");
-        response.sendRedirect("index.html");
+        response.sendRedirect("ControladorElementosP");
     }
     
     public void subirFoto(HttpServletRequest request, Part archivo){
@@ -125,7 +140,7 @@ public class ControladorUsuarios extends HttpServlet {
         //Obtiene la ruta absoluta de la aplicacion web (getServletContext)
         String applicationPath = request.getServletContext().getRealPath("");
         //Construye la ruta a donde se subirán los archivos.
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+        String uploadFilePath = applicationPath + UPLOAD_DIR; 
            // Crea la carpeta si no existe
         File fileSaveDir = new File(uploadFilePath);
         if (!fileSaveDir.exists()) {
@@ -133,10 +148,10 @@ public class ControladorUsuarios extends HttpServlet {
         }
         // Se monta el archivo a subir
         String fileName = archivo.getSubmittedFileName();
-            String archivoSubir = uploadFilePath + fileName;
+        String archivoSubir = uploadFilePath + File.separator + fileName;
         try {
             //Se escribe el archivo en la ruta obtenidoa
-            archivo.write(uploadFilePath);
+             archivo.write(archivoSubir);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(ControladorUsuarios.class.getName()).log(Level.SEVERE, null, ex);

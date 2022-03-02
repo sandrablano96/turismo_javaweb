@@ -14,9 +14,8 @@ import modelo.Usuario;
  */
 public interface ICrudUsuario {
     public boolean insertar(Usuario u);
-    public boolean modificar(Usuario u);
     public Usuario consultar(String email);
-    //public List<Usuario> consultarUsuarios();
-    public String comprobarRol(Usuario u);
+
+
     
 }
